@@ -10,6 +10,7 @@ import {
   Folder,
   FolderOpen,
   Users,
+  ChevronRight,
 } from 'lucide-vue-next'
 
 export type DriveNode = {
@@ -82,7 +83,7 @@ const sortedNodes = computed(() =>
         :class="{ expanded: isExpanded(node) }"
         @click="emit('toggle', node.id)"
       >
-        <span class="tree-caret">▸</span>
+        <ChevronRight class="tree-caret" />
         <component :is="iconFor(node)" class="tree-icon" />
         <span class="tree-name" :title="node.name">{{ node.name }}</span>
         <span v-if="node.shared" class="tree-share" title="共有中">

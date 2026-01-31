@@ -227,9 +227,11 @@ input {
 }
 
 .tree-caret {
-  display: inline-block;
   width: 12px;
+  height: 12px;
   transition: transform 0.2s ease;
+  color: #94a3b8;
+  flex-shrink: 0;
 }
 
 .tree-button {
