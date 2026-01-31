@@ -45,6 +45,7 @@ const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined
 const SCOPES = 'https://www.googleapis.com/auth/drive.readonly openid email profile'
 const STORAGE_KEY = 'gdrive-tree-token'
 const TOKEN_SKEW_MS = 60 * 1000
+const BASE_PATH = import.meta.env.BASE_URL.replace(/\/$/, '')
 
 const nodes = ref<DriveNode[]>([])
 const selectedId = ref<string | null>(null)
@@ -319,16 +320,17 @@ const formatBytes = (bytes?: number) => {
 
 const updateUrlWithSelection = (id: string | null) => {
   const url = new URL(window.location.href)
-  if (!id) {
-    url.pathname = '/'
-  } else {
-    url.pathname = `/file/d/${id}`
-  }
+  const nextPath = id ? `/file/d/${id}` : '/'
+  url.pathname = `${BASE_PATH}${nextPath}`
   window.history.replaceState({}, '', url.toString())
 }
 
 const loadSelectionFromUrl = () => {
-  const pathMatch = window.location.pathname.match(/\/file\/d\/([^/]+)/)
+  const pathname = window.location.pathname
+  const relativePath = pathname.startsWith(BASE_PATH)
+    ? pathname.slice(BASE_PATH.length)
+    : pathname
+  const pathMatch = relativePath.match(/\/file\/d\/([^/]+)/)
   if (pathMatch?.[1]) {
     selectedId.value = pathMatch[1]
   }
